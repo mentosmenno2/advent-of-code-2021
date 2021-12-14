@@ -19,7 +19,7 @@ foreach ($depths as $index => $depth) {
 
     $sum = array_sum( $data );
     if ( $previous_sum === null ) {
-        $previous_sum = $depth;
+        $previous_sum = $sum;
         continue;
     }
 
