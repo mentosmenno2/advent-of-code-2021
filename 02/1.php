@@ -1,5 +1,6 @@
 <?php
 
+// Read data from file, and prepare it for use
 $file_content = file_get_contents( 'data.txt' );
 $instructions = explode( PHP_EOL, $file_content );
 $instructions = array_map( function( $instruction ): array {

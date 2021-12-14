@@ -1,5 +1,6 @@
 <?php
 
+// Read data from file, and prepare it for use
 $file_content = file_get_contents( 'data.txt' );
 $report_lines = explode( PHP_EOL, $file_content );
 $report_lines = array_map( function( string $report_line ): array {
@@ -8,6 +9,15 @@ $report_lines = array_map( function( string $report_line ): array {
     return $report_line;
 }, $report_lines );
 
+/**
+ * Every row of data consists of 12 bytes.
+ * Therefore we can loop over those 12 bytes, and get all bytes in every column.
+ * 
+ * Calculating if there are more ones or zero's in the column can be done in multiple ways.
+ * I've chosen to get the sum of all values in a colum, and devide it by the amount of lines in the data.
+ * If that is larger than 0.5, there are more ones.
+ * If that is smaller than 0.5, there are more zeroes.
+ */
 $gamma_rate_binary = '';
 $epsilon_rate_binary = '';
 for ( $k = 0 ; $k < 12; $k++ ){

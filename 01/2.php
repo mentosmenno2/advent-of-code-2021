@@ -1,5 +1,6 @@
 <?php
 
+// Read data from file, and prepare it for use
 $file_content = file_get_contents( 'data.txt' );
 $depths = explode( PHP_EOL, $file_content );
 $depths = array_map( 'intval', $depths );
