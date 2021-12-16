@@ -8,11 +8,12 @@ class BingoGame
     /** @var int[] */
     protected $draw_order = array();
 
-    /** @var int[] */
-    protected $drawn_numbers = array();
+    /** @var bool */
+    protected $get_winning_board = true;
 
-    public function __construct( string $data_file )
+    public function __construct( string $data_file, bool $get_winning_board = true )
     {
+        $this->get_winning_board = $get_winning_board;
         $this->load_game_data( $data_file );
         $this->start_game();
     }
@@ -37,24 +38,30 @@ class BingoGame
     }
 
     protected function start_game() {
-        $board_that_won = null;
+        $last_won_board = null;
+        $last_drawn_number = null;
         foreach ($this->draw_order as $drawn_number) {
-            $this->drawn_numbers[] = $drawn_number;
-            foreach ($this->boards as $board) {
+            foreach ($this->boards as $board_index => $board) {
+                if ( $board->has_won() ) {
+                    continue;
+                }
+
                 $board->maybe_mark_square( $drawn_number );
                 if ( $board->has_won() ) {
-                    $board_that_won = $board;
-                    break;
+                    $last_won_board = $board;
+                    $last_drawn_number = $drawn_number;
                 }
             }
 
-            if ( $board_that_won ) {
-                var_dump( $this->calculate_score( $board_that_won, $drawn_number ) );
+            if ( $this->get_winning_board && $last_won_board ) {
+                var_dump( $this->calculate_score( $last_won_board, $drawn_number ) );
                 break;
             }
         }
 
-        die();
+        if ( ! $this->get_winning_board ) {
+            var_dump( $this->calculate_score( $last_won_board, $last_drawn_number ) );
+        }
     }
 
     protected function calculate_score( Board $board, int $last_drawn_number ): int {
