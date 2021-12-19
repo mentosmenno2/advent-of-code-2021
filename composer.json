@@ -27,9 +27,7 @@
         "test":[
             "echo Running tests",
             "@test:composer",
-            "@test:phpcs",
-            "@test:psalm",
-            "@test:docs"
+            "@test:phpcs"
         ],
         "test:composer": [
             "composer validate"
