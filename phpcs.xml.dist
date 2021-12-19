@@ -3,6 +3,7 @@
 	<description>Mentosmenno2 Image Crop Positioner ruleset</description>
 	<config name="testVersion" value="7.3-"/>
 	<file>./answers</file>
+	<file>./index.php</file>
 
 	<arg name="colors"/>
 	<arg value="sp"/>

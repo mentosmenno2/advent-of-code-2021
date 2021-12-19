@@ -37,9 +37,6 @@
         "test:phpcs": [
             "phpcs"
         ],
-        "test:docs": [
-            "php-doc-check ./answers -x vendor"
-        ],
         "fix":[
             "phpcbf"
         ]
