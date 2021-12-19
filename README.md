@@ -1,3 +1,6 @@
+
+[![GitHub Actions status](https://github.com/mentosmenno2/advent-of-code-2021/workflows/Build%20%26%20test/badge.svg)](https://github.com/mentosmenno2/advent-of-code-2021/actions)
+
 # Advent Of Code 2021
 
 I'm attempting to solve puzzles from advent of code 2021.
