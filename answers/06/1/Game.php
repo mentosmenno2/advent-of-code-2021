@@ -29,10 +29,7 @@ class Game
 
 	protected function start_game(): void
 	{
-		$fish_timers = array_map(function (LanternFish $fish): int {
-			return $fish->get_internal_timer();
-		}, $this->fish);
-		// echo sprintf('Initial state: %s <br>', implode(',', $fish_timers));
+		// $this->display_fish_timers(0);
 
 		for ($day=1; $day < $this->days_to_simulate + 1; $day++) {
 			foreach ($this->fish as $fish) {
@@ -42,12 +39,17 @@ class Game
 				$fish->pass_internal_timer_day();
 			}
 
-			$fish_timers = array_map(function (LanternFish $fish): int {
-				return $fish->get_internal_timer();
-			}, $this->fish);
-			// echo sprintf('After %d days: %s <br>', $day, implode(',', $fish_timers));
+			// $this->display_fish_timers($day);
 		}
 
 		echo sprintf('<strong>After %d days the total amount of fish is: %s </strong>', $this->days_to_simulate, count($this->fish));
+	}
+
+	protected function display_fish_timers(int $day): void
+	{
+		$fish_timers = array_map(function (LanternFish $fish): int {
+			return $fish->get_internal_timer();
+		}, $this->fish);
+		echo sprintf('After %d days: %s <br>', $day, implode(',', $fish_timers));
 	}
 }
