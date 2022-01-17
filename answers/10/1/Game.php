@@ -45,7 +45,6 @@ class Game
 				// Is ending character. Can be invalid.
 				$last_stack_char = array_pop($stack);
 				if ($last_stack_char !== $bracket_pairs[$string_part]) {
-					// Invalid. Trigger error.
 					return $string_part;
 				}
 			}
