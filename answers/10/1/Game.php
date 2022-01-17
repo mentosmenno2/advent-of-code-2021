@@ -21,9 +21,9 @@ class Game
 	{
 		$errors = array_fill_keys($this->get_closing_chars(), 0);
 		foreach ($this->lines as $line) {
-			$errorring_char = $this->get_corrupt_char($line);
-			if ($errorring_char) {
-				$errors[$errorring_char]++;
+			$corrupt_char = $this->get_corrupt_char($line);
+			if ($corrupt_char) {
+				$errors[$corrupt_char]++;
 			}
 		}
 

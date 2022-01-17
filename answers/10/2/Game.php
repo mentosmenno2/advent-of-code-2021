@@ -19,15 +19,41 @@ class Game
 
 	protected function start_game(): void
 	{
-		$errors = array_fill_keys($this->get_closing_chars(), 0);
+		$scores = array();
 		foreach ($this->lines as $line) {
-			$errorring_char = $this->get_corrupt_char($line);
-			if ($errorring_char) {
-				$errors[$errorring_char]++;
+			$corrupt_char = $this->get_corrupt_char($line);
+			if ($corrupt_char) {
+				continue;
+			}
+
+			$completion_string = $this->get_completion_string($line);
+			$scores[] = $this->completion_string_to_autocomplete_score($completion_string);
+		}
+
+		var_dump($this->get_autocomplete_winner_from_autocomplete_scores($scores));
+	}
+
+	public function get_completion_string(string $line): ?string
+	{
+		$string_parts = str_split($line);
+		$opening_chars = $this->get_opening_chars();
+		$bracket_pairs_inverted = array_flip($this->get_bracket_pairs());
+
+		$stack = array();
+		foreach ($string_parts as $string_part) {
+			if (in_array($string_part, $opening_chars, true)) {
+				// Is opening character. Cannot be invalid.
+				$stack[] = $string_part;
+			} else {
+				// Is ending character. Can be invalid.
+				$last_stack_char = array_pop($stack);
 			}
 		}
 
-		var_dump($this->errors_to_syntax_error_score($errors));
+		$completion_items = array_map(function (string $stack_item) use ($bracket_pairs_inverted) {
+			return $bracket_pairs_inverted[$stack_item];
+		}, array_reverse($stack));
+		return implode('', $completion_items);
 	}
 
 	public function get_corrupt_char(string $line): ?string
@@ -74,5 +100,37 @@ class Game
 	protected function errors_to_syntax_error_score(array $errors): int
 	{
 		return $errors[')'] * 3 + $errors[']'] * 57 + $errors['}'] * 1197 + $errors['>'] * 25137;
+	}
+
+	protected function completion_string_to_autocomplete_score(string $completion_string): int
+	{
+		$score = 0;
+		$completion_string_parts = str_split($completion_string);
+		foreach ($completion_string_parts as $char) {
+			$score = $score * 5;
+			switch ($char) {
+				case ')':
+					$score += 1;
+					break;
+				case ']':
+					$score += 2;
+					break;
+				case '}':
+					$score += 3;
+					break;
+				case '>':
+					$score += 4;
+					break;
+			}
+		}
+		return $score;
+	}
+
+	protected function get_autocomplete_winner_from_autocomplete_scores(array $scores): int
+	{
+		sort($scores);
+		$largest_index = count($scores) - 1;
+		$middle_index = floor($largest_index / 2);
+		return $scores[$middle_index];
 	}
 }
