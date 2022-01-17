@@ -21,7 +21,7 @@ class Game
 	{
 		$errors = array_fill_keys($this->get_closing_chars(), 0);
 		foreach ($this->lines as $line) {
-			$errorring_char = $this->get_erroring_char($line);
+			$errorring_char = $this->get_corrupt_char($line);
 			if ($errorring_char) {
 				$errors[$errorring_char]++;
 			}
@@ -30,7 +30,7 @@ class Game
 		var_dump($this->errors_to_syntax_error_score($errors));
 	}
 
-	public function get_erroring_char(string $line): ?string
+	public function get_corrupt_char(string $line): ?string
 	{
 		$string_parts = str_split($line);
 		$opening_chars = $this->get_opening_chars();
